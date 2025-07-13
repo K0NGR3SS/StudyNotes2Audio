@@ -18,7 +18,7 @@ def lambda_handler(event, context): #Context has to be included to match AWS exp
 
     audio_key = key.replace('notes/', 'audio/').replace('.txt', '.mp3')
 
-        # 🛑 Перевіряємо, чи файл вже існує
+    #Checking for a text file repetition
     try:
         s3.head_object(Bucket=bucket, Key=audio_key)
         print(f"Audio file already exists: {audio_key}")
