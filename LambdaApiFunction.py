@@ -25,10 +25,20 @@ def lambda_handler(event, context):
             Params = {'Bucket': bucket_name, 'Key': key, 'ContentType': 'text/plain'},
             ExpiresIn = 600
         )
-
+        #Modified the Lambda to use Get file
         return {
             'statusCode': 200,
-            'body': json.dumps({'upload url': url, 'key': key})
+            'body': json.dumps({
+                'uploadUrl': url,
+                'bucket': bucket_name,
+                'region': 'eu-west-1',
+                'key': key
+            }),
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': '*'
+            }
         }
 
     except Exception as e:
