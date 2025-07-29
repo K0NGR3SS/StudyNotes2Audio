@@ -9,8 +9,8 @@ bucket_name = 'target-bucket32134'
 
 def lambda_handler(event, context):
     try:
-        body = json.loads(event['body'])
-        filename = body['filename']
+        #Get filename from query parameters
+        filename = event['queryStringParameters']['filename']
 
         if not filename.endswith('.txt'):
             return {
@@ -29,7 +29,7 @@ def lambda_handler(event, context):
         return {
             'statusCode': 200,
             'body': json.dumps({
-                'uploadUrl': url,
+                'uploadURL': url,
                 'bucket': bucket_name,
                 'region': 'eu-west-1',
                 'key': key
