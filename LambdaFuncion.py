@@ -12,11 +12,13 @@ def lambda_handler(event, context): #Context has to be included to match AWS exp
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = urllib.parse.unquote(event['Records'][0]['s3']['object']['key'])
 
-    if not key.startswith('notes/'):
-        print("Key does not start with 'notes/'")
+    if not key.startswith('notes/files/'):
+        print(f"Key does not start with 'notes/files/': {key}")
         return
 
-    audio_key = key.replace('notes/', 'audio/').replace('.txt', '.mp3')
+    #Extract just the filename and create proper audio path
+    filename = key.split('/')[-1]  #Get the actual filename
+    audio_key = f"audio/{filename.replace('.txt', '.mp3')}"
 
     #Checking for a text file repetition
     try:
