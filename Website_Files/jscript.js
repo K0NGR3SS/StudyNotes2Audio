@@ -88,10 +88,10 @@ async function uploadFile() {
             if (exists) {
                 const audioUrl = `https://${bucket}.s3.${region}.amazonaws.com/${audioKey}`;
                 statusDiv.innerHTML = `
-                    <div style="color: green; font-weight: bold;">✅ Audio file is ready!</div>
+                    <div style="color: green; font-weight: bold;"> Audio file is ready!</div>
                     <br>
                     <a href="${audioUrl}" target="_blank" style="color: #4CAF50; text-decoration: none; font-weight: bold;">
-                        🎧 Listen to your audio file
+                         Listen to your audio file
                     </a>
                 `;
                 return;
@@ -114,7 +114,7 @@ async function uploadFile() {
     } catch (error) {
         console.error('Upload error:', error);
         statusDiv.innerHTML = `
-            <div style="color: red; font-weight: bold;">❌ Error occurred:</div>
+            <div style="color: red; font-weight: bold;"> Error occurred:</div>
             <br>
             <div>${error.message}</div>
             <br>
