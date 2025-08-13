@@ -1,4 +1,4 @@
-# Voice Vault Lambda
+#
 
 Turn your study notes into portable audio using AWS Lambda and Amazon Polly.
 
