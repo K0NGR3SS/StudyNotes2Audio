@@ -167,7 +167,6 @@ When I upload a study note:
 - **Multi-language support** - Detect language and select appropriate Polly voice
 - **Audio transcription reverse mode** - Convert audio back to searchable text
 - **User authentication** - Personal study note libraries
-- **Mobile app** - Native iOS/Android applications
 - **Study analytics** - Track listening habits and learning progress
 
 ---
