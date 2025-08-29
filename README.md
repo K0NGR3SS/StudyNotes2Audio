@@ -174,7 +174,7 @@ When I upload a study note:
 ## Network Issues (Currently Being Resolved)
 The system is architecturally sound but experiencing intermittent connectivity issues between the frontend and API Gateway. The Lambda functions process files correctly when triggered directly. This appears to be related to CORS configuration or API Gateway routing - debugging in progress.
 
-![Issue](screenshots/network-issue.png)
+![Network Issue](screenshots/network-issue.png)
 
 ---
 
