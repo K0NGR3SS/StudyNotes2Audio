@@ -1,6 +1,6 @@
 # AWS StudyNotes2Audio
 
-A serverless text-to-speech conversion system that transforms your study notes into portable audio files using AWS Lambda, Amazon Polly, and S3.
+My biggest personal project, a serverless text-to-speech conversion system that transforms your study notes into portable audio files using AWS Lambda, Amazon Polly, and S3.
 
 ---
 
