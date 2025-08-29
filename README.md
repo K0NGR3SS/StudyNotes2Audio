@@ -23,7 +23,8 @@ I created an S3 bucket for file storage and two Lambda functions, one for handli
 - API Gateway + Lambda for secure pre-signed URL generation
 - Event-driven Lambda for automated Polly processing
 
-![S3 Bucket Structure](screenshots/s3-bucket-structure.png)
+![S3 Upload Bucket Structure](screenshots/s3-bucketstructure.png)
+![S3 Audio Bucket Structure](screenshots/s3-audio.png)
 
 ---
 
