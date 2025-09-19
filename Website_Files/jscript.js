@@ -56,7 +56,7 @@ async function uploadFile() {
         showLoading("Requesting upload URL...");
 
         // Make GET request with query parameters (matching your Lambda)
-        const apiUrl = `https://st4t9wui69.execute-api.eu-west-1.amazonaws.com/prod?filename=${encodeURIComponent(fileName)}`;
+        const apiUrl = `YOUR_API_ENDPOINT_HERE?filename=${encodeURIComponent(fileName)}`;
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -109,9 +109,9 @@ async function uploadFile() {
             if (exists) {
                 const audioUrl = `https://${bucket}.s3.${region}.amazonaws.com/${audioKey}`;
                 updateStatus(`
-                    <div style="color: #1a4d3a; font-weight: bold; margin-bottom: 10px;"> Audio file is ready!</div>
+                    <div style="color: #1a4d3a; font-weight: bold; margin-bottom: 10px;">Audio file is ready!</div>
                     <a href="${audioUrl}" target="_blank" class="audio-link">
-                         Listen to your audio file
+                        Listen to your audio file
                     </a>
                 `, 'success');
                 
@@ -127,9 +127,8 @@ async function uploadFile() {
         }
 
         // Timeout message with helpful information
-        statusDiv.innerHTML = `
-            <div style="color: orange;">⏱️ Audio generation is taking longer than expected.</div>
-            <br>
+        updateStatus(`
+            <div style="color: #856404; font-weight: bold; margin-bottom: 10px;">Audio generation is taking longer than expected.</div>
             <div>This might happen with larger files. Please check back in a few minutes.</div>
             <div style="margin-top: 10px; font-size: 0.9em;">Expected audio location: <code>audio/${fileName.replace('.txt', '.mp3')}</code></div>
         `, 'warning');
@@ -137,7 +136,7 @@ async function uploadFile() {
     } catch (error) {
         console.error('Upload error:', error);
         updateStatus(`
-            <div style="font-weight: bold; margin-bottom: 10px;"> Error occurred:</div>
+            <div style="font-weight: bold; margin-bottom: 10px;">Error occurred:</div>
             <div>${error.message}</div>
             <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">Check console for more details.</div>
         `, 'error');
@@ -145,7 +144,7 @@ async function uploadFile() {
 
     // Re-enable button
     uploadBtn.disabled = false;
-    uploadBtn.textContent = "🎵 Upload and Convert";
+    uploadBtn.textContent = "Upload and Convert";
 }
 
 // Add event listeners when DOM is loaded
