@@ -11,10 +11,27 @@ async function checkAudioExists(bucket, region, audioKey) {
     }
 }
 
+// Function to update status with appropriate styling
+function updateStatus(message, type = 'info') {
+    const statusDiv = document.getElementById('status');
+    statusDiv.className = `status-${type}`;
+    statusDiv.innerHTML = message;
+}
+
+// Function to show loading state
+function showLoading(message) {
+    const statusDiv = document.getElementById('status');
+    statusDiv.className = 'status-info';
+    statusDiv.innerHTML = `
+        <div class="loading"></div>
+        <span style="margin-left: 10px;">${message}</span>
+    `;
+}
+
 // Async function that is triggered when the user selects and uploads a file
 async function uploadFile() {
     const fileInput = document.getElementById('fileInput');
-    const statusDiv = document.getElementById('status');
+    const uploadBtn = document.getElementById('uploadBtn');
 
     // Validate file selection
     if (!fileInput.files.length) {
@@ -31,11 +48,15 @@ async function uploadFile() {
         return;
     }
 
+    // Disable button during upload
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "Processing...";
+
     try {
-        statusDiv.textContent = "Requesting upload URL...";
+        showLoading("Requesting upload URL...");
 
         // Make GET request with query parameters (matching your Lambda)
-        const apiUrl = `https://st4t9wui69.execute-api.eu-west-1.amazonaws.com/prod?filename=${encodeURIComponent(fileName)}`;
+        const apiUrl = `YOUR_API_ENDPOINT_HERE?filename=${encodeURIComponent(fileName)}`;
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -60,7 +81,7 @@ async function uploadFile() {
         const region = data.region;
 
         // Upload file directly to S3 using the pre-signed URL
-        statusDiv.textContent = "Uploading file to S3...";
+        showLoading("Uploading file to S3...");
 
         const uploadResponse = await fetch(uploadURL, {
             method: 'PUT',
@@ -75,7 +96,7 @@ async function uploadFile() {
         }
 
         // Wait for audio file generation
-        statusDiv.textContent = "File uploaded successfully! Waiting for audio to be generated...";
+        showLoading("File uploaded successfully! Generating audio...");
 
         const audioKey = `audio/${fileName.replace('.txt', '.mp3')}`;
         const maxChecks = 15; // Increased from 10 to give more time
@@ -87,50 +108,66 @@ async function uploadFile() {
 
             if (exists) {
                 const audioUrl = `https://${bucket}.s3.${region}.amazonaws.com/${audioKey}`;
-                statusDiv.innerHTML = `
-                    <div style="color: green; font-weight: bold;"> Audio file is ready!</div>
-                    <br>
-                    <a href="${audioUrl}" target="_blank" style="color: #4CAF50; text-decoration: none; font-weight: bold;">
+                updateStatus(`
+                    <div style="color: #1a4d3a; font-weight: bold; margin-bottom: 10px;"> Audio file is ready!</div>
+                    <a href="${audioUrl}" target="_blank" class="audio-link">
                          Listen to your audio file
                     </a>
-                `;
+                `, 'success');
+                
+                // Re-enable button
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = "🎵 Upload and Convert";
                 return;
             }
 
             checks++;
-            statusDiv.textContent = `File uploaded successfully! Checking for audio... (${checks}/${maxChecks})`;
+            showLoading(`Generating audio... (${checks}/${maxChecks})`);
             await new Promise(resolve => setTimeout(resolve, checkInterval));
         }
 
         // Timeout message with helpful information
-        statusDiv.innerHTML = `
-            <div style="color: orange;">⏱️ Audio generation is taking longer than expected.</div>
-            <br>
+        updateStatus(`
+            <div style="color: #856404; font-weight: bold; margin-bottom: 10px;"> Audio generation is taking longer than expected.</div>
             <div>This might happen with larger files. Please check back in a few minutes.</div>
-            <br>
-            <div>Expected audio location: <code>audio/${fileName.replace('.txt', '.mp3')}</code></div>
-        `;
+            <div style="margin-top: 10px; font-size: 0.9em;">Expected audio location: <code>audio/${fileName.replace('.txt', '.mp3')}</code></div>
+        `, 'warning');
 
     } catch (error) {
         console.error('Upload error:', error);
-        statusDiv.innerHTML = `
-            <div style="color: red; font-weight: bold;"> Error occurred:</div>
-            <br>
+        updateStatus(`
+            <div style="font-weight: bold; margin-bottom: 10px;"> Error occurred:</div>
             <div>${error.message}</div>
-            <br>
-            <div style="font-size: 0.9em; color: #666;">Check console for more details.</div>
-        `;
+            <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">Check console for more details.</div>
+        `, 'error');
     }
+
+    // Re-enable button
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = "🎵 Upload and Convert";
 }
 
-// Add event listener for Enter key on file input
+// Add event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('fileInput');
-    if (fileInput) {
+    const fileLabel = document.getElementById('fileLabel');
+    
+    if (fileInput && fileLabel) {
         fileInput.addEventListener('change', function() {
-            const statusDiv = document.getElementById('status');
-            if (statusDiv && this.files.length > 0) {
-                statusDiv.textContent = `Selected: ${this.files[0].name}`;
+            if (this.files.length > 0) {
+                const fileName = this.files[0].name;
+                fileLabel.textContent = `Selected: ${fileName}`;
+                fileLabel.classList.add('has-file');
+                
+                // Clear any previous status
+                const statusDiv = document.getElementById('status');
+                if (statusDiv) {
+                    statusDiv.textContent = '';
+                    statusDiv.className = '';
+                }
+            } else {
+                fileLabel.textContent = 'Choose a .txt file to upload';
+                fileLabel.classList.remove('has-file');
             }
         });
     }

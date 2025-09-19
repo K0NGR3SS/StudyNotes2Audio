@@ -2,16 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>StudyNotes2Audio</title>
-    <link rel = "stylesheet" href = "style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert your study notes to audio files instantly. Upload text files and get MP3 audio for better learning on the go.">
+    <meta name="keywords" content="study notes, text to speech, audio conversion, learning tools, mp3 converter">
+    <meta name="author" content="StudyNotes2Audio">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="StudyNotes2Audio - Convert Notes to Audio">
+    <meta property="og:description" content="Transform your study notes into audio files for better learning">
+    <meta property="og:image" content="/favicon.ico">
+    
+    <title>StudyNotes2Audio - Convert Notes to Audio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class = "container">
-        <h1> StudyNotes2Audio </h1>
-        <input type="file" id="fileInput" accept=".txt">
-        <button onclick="uploadFile()">Upload and Convert</button>
-        <div id = "status"></div>
+    <div class="container">
+        <div class="header">
+            <h1>StudyNotes2Audio</h1>
+            <p class="subtitle">Transform your study notes into audio files for better learning</p>
+        </div>
+        
+        <div class="upload-section">
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" accept=".txt" class="file-input">
+                <label for="fileInput" class="file-input-label" id="fileLabel">
+                        Choose a .txt file to upload
+                </label>
+            </div>
+            
+            <button onclick="uploadFile()" class="upload-btn" id="uploadBtn">
+                        Upload and Convert
+            </button>
+        </div>
+        
+        <div id="status"></div>
     </div>
+    
     <script src="jscript.js"></script>
 </body>
 </html>
