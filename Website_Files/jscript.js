@@ -35,7 +35,7 @@ async function uploadFile() {
         statusDiv.textContent = "Requesting upload URL...";
 
         // Make GET request with query parameters (matching your Lambda)
-        const apiUrl = `https://st4t9wui69.execute-api.eu-west-1.amazonaws.com/prod?filename=${encodeURIComponent(fileName)}`;
+        const apiUrl = `https://yourapistuff.amazonaws.com/prod?filename=${encodeURIComponent(fileName)}`;
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -104,7 +104,7 @@ async function uploadFile() {
 
         // Timeout message with helpful information
         statusDiv.innerHTML = `
-            <div style="color: orange;">⏱️ Audio generation is taking longer than expected.</div>
+            <div style="color: orange;">Audio generation is taking longer than expected.</div>
             <br>
             <div>This might happen with larger files. Please check back in a few minutes.</div>
             <br>
