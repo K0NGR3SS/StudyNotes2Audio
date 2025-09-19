@@ -56,7 +56,7 @@ async function uploadFile() {
         showLoading("Requesting upload URL...");
 
         // Make GET request with query parameters (matching your Lambda)
-        const apiUrl = `YOUR_API_ENDPOINT_HERE?filename=${encodeURIComponent(fileName)}`;
+        const apiUrl = `https://st4t9wui69.execute-api.eu-west-1.amazonaws.com/prod?filename=${encodeURIComponent(fileName)}`;
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -127,8 +127,9 @@ async function uploadFile() {
         }
 
         // Timeout message with helpful information
-        updateStatus(`
-            <div style="color: #856404; font-weight: bold; margin-bottom: 10px;"> Audio generation is taking longer than expected.</div>
+        statusDiv.innerHTML = `
+            <div style="color: orange;">⏱️ Audio generation is taking longer than expected.</div>
+            <br>
             <div>This might happen with larger files. Please check back in a few minutes.</div>
             <div style="margin-top: 10px; font-size: 0.9em;">Expected audio location: <code>audio/${fileName.replace('.txt', '.mp3')}</code></div>
         `, 'warning');
